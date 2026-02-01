@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/ahmadawais/azaan/main/.github/azaan.jpeg" alt="azaan" />
+
 # azaan
 
 > Islamic prayer times CLI with automatic location detection
