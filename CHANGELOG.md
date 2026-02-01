@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-02-02
+
+### Added
+- Cover image to README
+
 ## [1.0.2] - 2026-02-01
 
 ### Improved
