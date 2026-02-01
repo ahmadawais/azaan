@@ -1,7 +1,34 @@
 import * as p from '@clack/prompts';
 import pc from 'picocolors';
-import {setLocation, setMethod, setTimezone} from './config.js';
+import {setLocation, setMethod, setSchool, setTimezone} from './config.js';
 import {guessLocation} from './geo.js';
+import {getRecommendedMethod, getMethodName, getRecommendedSchool} from './methods.js';
+
+const allMethods = [
+	{value: 0, label: 'Jafari (Shia Ithna-Ashari)'},
+	{value: 1, label: 'Karachi (Pakistan)'},
+	{value: 2, label: 'ISNA (North America)'},
+	{value: 3, label: 'MWL (Muslim World League)'},
+	{value: 4, label: 'Makkah (Umm al-Qura)'},
+	{value: 5, label: 'Egypt'},
+	{value: 7, label: 'Tehran (Shia)'},
+	{value: 8, label: 'Gulf Region'},
+	{value: 9, label: 'Kuwait'},
+	{value: 10, label: 'Qatar'},
+	{value: 11, label: 'Singapore'},
+	{value: 12, label: 'France'},
+	{value: 13, label: 'Turkey'},
+	{value: 14, label: 'Russia'},
+	{value: 15, label: 'Moonsighting Committee'},
+	{value: 16, label: 'Dubai'},
+	{value: 17, label: 'Malaysia (JAKIM)'},
+	{value: 18, label: 'Tunisia'},
+	{value: 19, label: 'Algeria'},
+	{value: 20, label: 'Indonesia'},
+	{value: 21, label: 'Morocco'},
+	{value: 22, label: 'Portugal'},
+	{value: 23, label: 'Jordan'},
+];
 
 export const promptLocation = async (): Promise<{city: string; country: string} | null> => {
 	p.intro(pc.cyan('Azaan Setup'));
@@ -42,33 +69,22 @@ export const promptLocation = async (): Promise<{city: string; country: string} 
 		return null;
 	}
 
+	// Get recommended method based on country
+	const recommended = getRecommendedMethod(country as string);
+	const initialMethod = recommended ?? 2; // Default to ISNA if no recommendation
+
+	// Reorder options to put recommended first
+	const sortedMethods = recommended !== null
+		? [
+			{value: recommended, label: `${getMethodName(recommended)} (Recommended)`, hint: 'Based on your location'},
+			...allMethods.filter(m => m.value !== recommended),
+		]
+		: allMethods;
+
 	const method = await p.select({
 		message: 'Select calculation method',
-		options: [
-			{value: 0, label: 'Jafari (Shia Ithna-Ashari)'},
-			{value: 1, label: 'Karachi (Pakistan)'},
-			{value: 2, label: 'ISNA (North America)'},
-			{value: 3, label: 'MWL (Muslim World League)'},
-			{value: 4, label: 'Makkah (Umm al-Qura)'},
-			{value: 5, label: 'Egypt'},
-			{value: 7, label: 'Tehran (Shia)'},
-			{value: 8, label: 'Gulf Region'},
-			{value: 9, label: 'Kuwait'},
-			{value: 10, label: 'Qatar'},
-			{value: 11, label: 'Singapore'},
-			{value: 12, label: 'France'},
-			{value: 13, label: 'Turkey'},
-			{value: 14, label: 'Russia'},
-			{value: 15, label: 'Moonsighting Committee'},
-			{value: 16, label: 'Dubai'},
-			{value: 17, label: 'Malaysia (JAKIM)'},
-			{value: 18, label: 'Tunisia'},
-			{value: 19, label: 'Algeria'},
-			{value: 20, label: 'Indonesia'},
-			{value: 21, label: 'Morocco'},
-			{value: 22, label: 'Portugal'},
-			{value: 23, label: 'Jordan'},
-		],
+		initialValue: initialMethod,
+		options: sortedMethods,
 	});
 
 	if (p.isCancel(method)) {
@@ -76,8 +92,32 @@ export const promptLocation = async (): Promise<{city: string; country: string} 
 		return null;
 	}
 
+	// Get recommended school based on country
+	const recommendedSchool = getRecommendedSchool(country as string);
+	const schoolOptions = recommendedSchool === 1
+		? [
+			{value: 1, label: 'Hanafi (Recommended)', hint: 'Later Asr time'},
+			{value: 0, label: 'Shafi', hint: 'Standard Asr time'},
+		]
+		: [
+			{value: 0, label: 'Shafi (Recommended)', hint: 'Standard Asr time'},
+			{value: 1, label: 'Hanafi', hint: 'Later Asr time'},
+		];
+
+	const school = await p.select({
+		message: 'Select school for Asr calculation',
+		initialValue: recommendedSchool,
+		options: schoolOptions,
+	});
+
+	if (p.isCancel(school)) {
+		p.cancel('Setup cancelled');
+		return null;
+	}
+
 	setLocation({city: city as string, country: country as string});
 	setMethod(method as number);
+	setSchool(school as number);
 
 	if (guessed?.timezone) {
 		setTimezone(guessed.timezone);

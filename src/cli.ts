@@ -9,7 +9,7 @@ const program = new Command();
 
 program
 	.name('azaan')
-	.description('Islamic prayer times CLI powered by Aladhan API')
+	.description('Islamic prayer times CLI')
 	.version(pkg.version, '-v, --version')
 	.option('-c, --city <city>', 'City name')
 	.option('-C, --country <country>', 'Country name')

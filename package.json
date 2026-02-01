@@ -1,6 +1,6 @@
 {
 	"name": "azaan",
-	"version": "0.0.1",
+	"version": "1.0.1",
 	"description": "Islamic prayer times CLI with automatic location detection",
 	"type": "module",
 	"bin": {
