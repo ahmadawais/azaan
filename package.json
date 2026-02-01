@@ -1,0 +1,63 @@
+{
+	"name": "azaan",
+	"version": "0.0.1",
+	"description": "Islamic prayer times CLI with automatic location detection",
+	"type": "module",
+	"bin": {
+		"azaan": "./dist/cli.js",
+		"athan": "./dist/cli.js",
+		"azan": "./dist/cli.js"
+	},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"start": "node dist/cli.js",
+		"test": "vitest",
+		"typecheck": "tsc --noEmit"
+	},
+	"keywords": [
+		"azaan",
+		"athan",
+		"azan",
+		"prayer",
+		"salah",
+		"namaz",
+		"islam",
+		"muslim",
+		"prayer-times",
+		"qibla",
+		"hijri",
+		"cli"
+	],
+	"author": "Ahmad Awais (https://twitter.com/MrAhmadAwais)",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ahmadawais/azaan"
+	},
+	"homepage": "https://github.com/ahmadawais/azaan#readme",
+	"bugs": {
+		"url": "https://github.com/ahmadawais/azaan/issues"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.0",
+		"tsup": "^8.3.5",
+		"typescript": "^5.7.2",
+		"vitest": "^2.1.8"
+	},
+	"dependencies": {
+		"@clack/prompts": "^0.9.1",
+		"commander": "^13.0.0",
+		"conf": "^13.0.1",
+		"ora": "^8.1.1",
+		"picocolors": "^1.1.1"
+	},
+	"engines": {
+		"node": ">=18"
+	}
+}

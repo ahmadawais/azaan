@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:aladhan.com)",
+      "WebFetch(domain:api.aladhan.com)",
+      "Bash(pnpm build:*)",
+      "Bash(azaan:*)",
+      "Bash(azaan next:*)",
+      "Bash(azaan methods:*)",
+      "Bash(pnpm link:*)"
+    ]
+  }
+}
