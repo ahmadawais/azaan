@@ -238,7 +238,7 @@ Powered by [Aladhan Prayer Times API](https://aladhan.com/prayer-times-api)
 
 ## Author
 
-Ahmad Awais (https://x.com/MrAhmadAwais)
+[Ahmad Awais](https://x.com/MrAhmadAwais)
 
 ## License
 
