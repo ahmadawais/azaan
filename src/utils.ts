@@ -1,4 +1,5 @@
 import pc from 'picocolors';
+import Table from 'cli-table3';
 import type {PrayerTimings} from './api.js';
 
 export const PRAYERS = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'] as const;
@@ -101,25 +102,39 @@ export const renderTimings = (timings: PrayerTimings, opts: RenderOptions): void
 	const {current, next, nextTime} = getCurrentAndNextPrayer(timings);
 	const until = timeUntil(nextTime);
 
+	const table = new Table({
+		chars: {
+			top: '', 'top-mid': '', 'top-left': '', 'top-right': '',
+			bottom: '', 'bottom-mid': '', 'bottom-left': '', 'bottom-right': '',
+			left: '', 'left-mid': '', mid: '', 'mid-mid': '',
+			right: '', 'right-mid': '', middle: '',
+		},
+		style: {'padding-left': 0, 'padding-right': 1},
+		colWidths: opts.plain ? [12, 10, 18] : [18, 10, 18],
+	});
+
 	for (const prayer of PRAYERS) {
 		const time = formatTime(timings[prayer], opts.format24h);
 
 		if (opts.plain) {
 			let suffix = '';
-			if (prayer === current) suffix = ' <- current';
-			else if (prayer === next) suffix = ` <- next in ${until}`;
-			console.log(`  ${prayer.padEnd(10)} ${time}${suffix}`);
+			if (prayer === current) suffix = '<- current';
+			else if (prayer === next) suffix = `<- next in ${until}`;
+			table.push([prayer, time, suffix]);
 		} else {
 			const emoji = getPrayerEmoji(prayer);
+			const label = `${emoji}  ${prayer}`;
 			if (prayer === current) {
-				console.log(`  ${emoji}  ${pc.green(pc.bold(prayer.padEnd(10)))} ${pc.green(time)} ${pc.dim('← current')}`);
+				table.push([pc.green(pc.bold(label)), pc.green(time), pc.dim('← current')]);
 			} else if (prayer === next) {
-				console.log(`  ${emoji}  ${pc.yellow(pc.bold(prayer.padEnd(10)))} ${pc.yellow(time)} ${pc.dim(`← next in ${until}`)}`);
+				table.push([pc.yellow(pc.bold(label)), pc.yellow(time), pc.dim(`← next in ${until}`)]);
 			} else {
-				console.log(`  ${emoji}  ${pc.dim(prayer.padEnd(10))} ${pc.dim(time)}`);
+				table.push([pc.dim(label), pc.dim(time), '']);
 			}
 		}
 	}
+
+	console.log(table.toString());
 	console.log('');
 };
 
