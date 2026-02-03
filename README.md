@@ -5,6 +5,7 @@
 > Islamic prayer times CLI with automatic location detection
 
 [![npm](https://img.shields.io/npm/v/azaan?style=for-the-badge&color=0C5C47)](https://www.npmjs.com/package/azaan)
+[![coverage](https://img.shields.io/badge/coverage-93%25-0C5C47?style=for-the-badge)](https://github.com/ahmadawais/azaan)
 
 ## Automatic Everything
 

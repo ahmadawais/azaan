@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-02-02
+
+### Added
+- Comprehensive test suite with 274 tests (93% coverage)
+- Coverage badge in README
+
+### Fixed
+- TypeScript errors in geo.ts with proper type definitions
+
 ## [1.0.3] - 2026-02-02
 
 ### Added
