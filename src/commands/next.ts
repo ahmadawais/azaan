@@ -1,8 +1,9 @@
 import ora from 'ora';
 import pc from 'picocolors';
 import {fetchTimingsByCity, fetchTimingsByCoords} from '../api.js';
-import {config, getLocation, hasLocation} from '../config.js';
+import {config, getLocation, hasLocation, setLocation, setTimezone} from '../config.js';
 import {banner, getNextPrayer, timeUntil, formatTime, getPrayerEmoji} from '../utils.js';
+import {promptLocationChange} from '../prompts.js';
 
 export const next = async (): Promise<void> => {
 	if (!hasLocation()) {
@@ -10,6 +11,15 @@ export const next = async (): Promise<void> => {
 		console.log(pc.red('  No location configured. Run: azaan config --city <city> --country <country>'));
 		console.log('');
 		process.exit(1);
+	}
+
+	const savedLoc = getLocation();
+	if (savedLoc.city && savedLoc.country) {
+		const change = await promptLocationChange({city: savedLoc.city, country: savedLoc.country});
+		if (change) {
+			setLocation({city: change.city, country: change.country});
+			if (change.timezone) setTimezone(change.timezone);
+		}
 	}
 
 	const spinner = ora({text: 'Fetching next prayer...', stream: process.stdout}).start();
