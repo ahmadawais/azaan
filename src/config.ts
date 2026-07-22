@@ -31,14 +31,14 @@ export const getLocation = (): {city?: string; country?: string; latitude?: numb
 
 export const hasLocation = (): boolean => {
 	const loc = getLocation();
-	return Boolean((loc.city && loc.country) || (loc.latitude && loc.longitude));
+	return Boolean((loc.city && loc.country) || (loc.latitude !== undefined && loc.longitude !== undefined));
 };
 
 export const setLocation = (opts: {city?: string; country?: string; latitude?: number; longitude?: number}): void => {
 	if (opts.city) config.set('city', opts.city);
 	if (opts.country) config.set('country', opts.country);
-	if (opts.latitude) config.set('latitude', opts.latitude);
-	if (opts.longitude) config.set('longitude', opts.longitude);
+	if (opts.latitude !== undefined) config.set('latitude', opts.latitude);
+	if (opts.longitude !== undefined) config.set('longitude', opts.longitude);
 };
 
 export const setMethod = (method: number): void => {

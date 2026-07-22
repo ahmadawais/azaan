@@ -98,6 +98,20 @@ describe('config', () => {
 
 			expect(hasLocation()).toBe(true);
 		});
+
+		it('should return true when latitude is 0 (equator)', () => {
+			config.set('latitude', 0);
+			config.set('longitude', 36.8219);
+
+			expect(hasLocation()).toBe(true);
+		});
+
+		it('should return true when longitude is 0 (prime meridian)', () => {
+			config.set('latitude', 51.4779);
+			config.set('longitude', 0);
+
+			expect(hasLocation()).toBe(true);
+		});
 	});
 
 	describe('setLocation', () => {
@@ -141,6 +155,20 @@ describe('config', () => {
 
 			expect(config.get('city')).toBeUndefined();
 			expect(config.get('country')).toBeUndefined();
+		});
+
+		it('should set latitude 0 (equator)', () => {
+			setLocation({ latitude: 0, longitude: 36.8219 });
+
+			expect(config.get('latitude')).toBe(0);
+			expect(config.get('longitude')).toBe(36.8219);
+		});
+
+		it('should set longitude 0 (prime meridian)', () => {
+			setLocation({ latitude: 51.4779, longitude: 0 });
+
+			expect(config.get('latitude')).toBe(51.4779);
+			expect(config.get('longitude')).toBe(0);
 		});
 	});
 

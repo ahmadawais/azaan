@@ -23,7 +23,7 @@ export const next = async (): Promise<void> => {
 
 		let data;
 
-		if (loc.latitude && loc.longitude) {
+		if (loc.latitude !== undefined && loc.longitude !== undefined) {
 			data = await fetchTimingsByCoords({
 				latitude: loc.latitude,
 				longitude: loc.longitude,
