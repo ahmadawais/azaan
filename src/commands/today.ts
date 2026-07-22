@@ -87,7 +87,7 @@ export const today = async (opts: TodayOptions): Promise<void> => {
 				method,
 				school,
 			});
-		} else if (loc.latitude && loc.longitude) {
+		} else if (loc.latitude !== undefined && loc.longitude !== undefined) {
 			data = await fetchTimingsByCoords({
 				latitude: loc.latitude,
 				longitude: loc.longitude,

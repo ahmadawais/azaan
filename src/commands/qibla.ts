@@ -32,7 +32,7 @@ export const qibla = async (opts: QiblaOptions = {}): Promise<void> => {
 	let lon = loc.longitude;
 
 	// If no coordinates, try to get from geolocation
-	if (!lat || !lon) {
+	if (lat === undefined || lon === undefined) {
 		if (!opts.json) {
 			const spinner = ora({text: 'Detecting location...', stream: process.stdout}).start();
 			const guessed = await guessLocation();

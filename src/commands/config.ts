@@ -240,8 +240,8 @@ export const configCommand = async (opts: ConfigOptions): Promise<void> => {
 		console.log('');
 		if (cfg.city) console.log(`  ${pc.dim('City:')}      ${cfg.city}`);
 		if (cfg.country) console.log(`  ${pc.dim('Country:')}   ${cfg.country}`);
-		if (cfg.latitude) console.log(`  ${pc.dim('Latitude:')}  ${cfg.latitude}`);
-		if (cfg.longitude) console.log(`  ${pc.dim('Longitude:')} ${cfg.longitude}`);
+		if (cfg.latitude !== undefined) console.log(`  ${pc.dim('Latitude:')}  ${cfg.latitude}`);
+		if (cfg.longitude !== undefined) console.log(`  ${pc.dim('Longitude:')} ${cfg.longitude}`);
 		console.log(`  ${pc.dim('Method:')}    ${cfg.method ?? 2}`);
 		console.log(`  ${pc.dim('School:')}    ${cfg.school === 1 ? 'Hanafi' : 'Shafi'}`);
 		if (cfg.timezone) console.log(`  ${pc.dim('Timezone:')}  ${cfg.timezone}`);
