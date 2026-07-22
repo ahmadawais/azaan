@@ -30,6 +30,30 @@ const allMethods = [
 	{value: 23, label: 'Jordan'},
 ];
 
+export interface LocationChange {
+	city: string;
+	country: string;
+	timezone?: string;
+}
+
+// Detects if the user appears to have traveled.
+// Constraint: prior saved location must be city/country pair, not coords
+export const promptLocationChange = async (
+	current: {city: string; country: string}
+): Promise<LocationChange | null> => {
+	const guessed = await guessLocation();
+	if (!guessed || !guessed.country || guessed.country === current.country) return null;
+
+	const update = await p.confirm({
+		message: `Looks like you've moved to ${guessed.city}, ${guessed.country} (saved location is ${current.city}, ${current.country}). Update your saved location?`,
+		initialValue: true,
+	});
+
+	if (p.isCancel(update) || !update) return null;
+
+	return {city: guessed.city, country: guessed.country, timezone: guessed.timezone};
+};
+
 export const promptLocation = async (): Promise<{city: string; country: string} | null> => {
 	p.intro(pc.cyan('Azaan Setup'));
 

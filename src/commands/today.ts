@@ -1,9 +1,9 @@
 import ora from 'ora';
 import pc from 'picocolors';
 import {fetchTimingsByCity, fetchTimingsByCoords, type PrayerData} from '../api.js';
-import {config, getLocation, hasLocation, setLocation} from '../config.js';
+import {config, getLocation, hasLocation, setLocation, setTimezone} from '../config.js';
 import {banner, plainBanner, renderTimings, renderDateInfo, renderLocationInfo, renderDateInfoPlain, renderLocationInfoPlain, getCurrentAndNextPrayer, timeUntil, formatTime, PRAYERS} from '../utils.js';
-import {promptLocation} from '../prompts.js';
+import {promptLocation, promptLocationChange} from '../prompts.js';
 
 interface TodayOptions {
 	city?: string;
@@ -57,6 +57,18 @@ export const today = async (opts: TodayOptions): Promise<void> => {
 			process.exit(0);
 		}
 		setLocation(location);
+	}
+
+	// If using saved location, check whether user traveled & update it
+	if (!opts.json && !opts.status && !opts.city && !opts.latitude) {
+		const savedLoc = getLocation();
+		if (savedLoc.city && savedLoc.country) {
+			const change = await promptLocationChange({city: savedLoc.city, country: savedLoc.country});
+			if (change) {
+				setLocation({city: change.city, country: change.country});
+				if (change.timezone) setTimezone(change.timezone);
+			}
+		}
 	}
 
 	const spinner = opts.json || opts.status
